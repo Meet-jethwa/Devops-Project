@@ -19,7 +19,13 @@ jobs:
           python -m pip install -r 2-three-tier/logic/requirements.txt
           for file in 3-microservices/services/*/requirements.txt; do python -m pip install -r "$file"; done
       - name: Run tests
-        run: python -m pytest 1-monolith/tests 3-microservices/tests
+        run: python -m pytest 1-monolith/tests 2-three-tier/tests 3-microservices/tests
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          while IFS= read -r file; do
+            node --check "$file"
+          done < <(find 1-monolith/static app/static -type f -name '*.js' -print)
       - name: Build monolith
         run: docker build -f 1-monolith/Dockerfile -t floraai-monolith .
       - name: Build three-tier logic image

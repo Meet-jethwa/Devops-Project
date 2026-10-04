@@ -46,5 +46,8 @@ flowchart LR
 | Data ownership | JSONL file | Logic writes PostgreSQL | Feedback service owns PostgreSQL access |
 | Complexity | Lowest | Medium | Highest; networking and observability are required |
 
-Gemini is optional. The recommendation remains rule-based, and the local
-template is used when Gemini is not configured or unavailable.
+Gemini is optional. The recommendation remains rule-based and uses intent,
+slots, and explicitly simulated context. The local `render_advisory` template
+function is used when Gemini is not configured or unavailable. The NLP
+microservice loads the saved MaxEnt and CRF artifacts plus the shared
+gazetteer, and the advisory service reuses the same six-language templates.

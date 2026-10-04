@@ -1,4 +1,4 @@
-﻿<!-- Phase 1 copied frontend asset; behavior intentionally unchanged. -->`r`n<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -26,7 +26,7 @@
         <div class="eyebrow">Multilingual field guidance</div>
         <h1>Ask in your own words. Get clear irrigation advice.</h1>
         <p class="hero-copy">FLoraAI turns everyday farmer questions into a focused sugarcane advisory in Your Local Language.</p>
-        <div class="actions"><a class="button button-primary" href="/chat">Ask the advisor <span aria-hidden="true">â†’</span></a><a class="button button-secondary" href="#how-it-works">See how it works</a></div>
+        <div class="actions"><a class="button button-primary" href="/chat">Ask the advisor <span aria-hidden="true">→</span></a><a class="button button-secondary" href="#how-it-works">See how it works</a></div>
       </div>
     </div></section>
 
@@ -48,14 +48,14 @@
 
     <section id="video" class="section"><div class="container"><div class="section-heading"><div class="eyebrow">See the flow</div><h2>From question to field note.</h2></div><div class="video-wrap"><video controls poster="/static/assets/Plant.jpg"><source src="/static/assets/demo.mp4" type="video/mp4"></video><div class="video-placeholder" hidden><div><h3>Demo video coming soon</h3><p>The interactive advisor is ready to try below.</p></div></div></div></div></section>
 
-    <section class="section section-soft"><div class="container"><div class="section-heading"><div class="eyebrow">Example output</div><h2>Advice that stays readable.</h2></div><div class="sample-grid"><article class="sample-card"><span class="sample-label">Example output</span><blockquote>â€œWhen should I irrigate after rain?â€</blockquote><p><b>Intent:</b> Irrigation and water</p><p>Check field moisture before watering again; avoid unnecessary irrigation.</p></article><article class="sample-card"><span class="sample-label">Example output</span><blockquote>â€œà¤—à¤¨à¥à¤¨à¥‡ à¤®à¥‡à¤‚ à¤ªà¤¾à¤¨à¥€ à¤•à¤¬ à¤¦à¥‡à¤¨à¤¾ à¤šà¤¾à¤¹à¤¿à¤?â€</blockquote><p><b>Intent:</b> à¤¸à¤¿à¤‚à¤šà¤¾à¤ˆ à¤”à¤° à¤ªà¤¾à¤¨à¥€</p><p>à¤®à¤¿à¤Ÿà¥à¤Ÿà¥€ à¤•à¥€ à¤¨à¤®à¥€ à¤¦à¥‡à¤–à¤•à¤° à¤¹à¥€ à¤…à¤—à¤²à¥€ à¤¸à¤¿à¤‚à¤šà¤¾à¤ˆ à¤•à¤¾ à¤¨à¤¿à¤°à¥à¤£à¤¯ à¤²à¥‡à¤‚à¥¤</p></article><article class="sample-card"><span class="sample-label">Example output</span><blockquote>â€œDrip vs flood irrigation?â€</blockquote><p><b>Intent:</b> Irrigation method</p><p>Compare the method with field layout, soil condition, and available water.</p></article></div></div></section>
+    <section class="section section-soft"><div class="container"><div class="section-heading"><div class="eyebrow">Example output</div><h2>Advice that stays readable.</h2></div><div class="sample-grid"><article class="sample-card"><span class="sample-label">Example output</span><blockquote>“When should I irrigate after rain?”</blockquote><p><b>Intent:</b> Irrigation and water</p><p>Check field moisture before watering again; avoid unnecessary irrigation.</p></article><article class="sample-card"><span class="sample-label">Example output</span><blockquote>“गन्ने में पानी कब देना चाहिए?”</blockquote><p><b>Intent:</b> सिंचाई और पानी</p><p>मिट्टी की नमी देखकर ही अगली सिंचाई का निर्णय लें।</p></article><article class="sample-card"><span class="sample-label">Example output</span><blockquote>“Drip vs flood irrigation?”</blockquote><p><b>Intent:</b> Irrigation method</p><p>Compare the method with field layout, soil condition, and available water.</p></article></div></div></section>
 
-    <section class="cta-band"><div class="container cta-band-inner"><div><h2>Bring your next field question.</h2><p>Ask the advisor in your own words and inspect how it understood you.</p></div><a class="button" href="/chat">Open the live demo â†’</a></div></section>
+    <section class="cta-band"><div class="container cta-band-inner"><div><h2>Bring your next field question.</h2><p>Ask the advisor in your own words and inspect how it understood you.</p></div><a class="button" href="/chat">Open the live demo →</a></div></section>
   </main>
   <footer class="footer"><div class="container footer-grid"><div><h3>FLoraAI</h3><p>Multilingual Farmer Query Understanding and Advisory Generation for a Sugarcane Irrigation Advisory System.</p><p>Demo only. Not a substitute for expert agronomic advice.</p></div><div><h3>Project</h3><p>Meet Jethwa</p><p>Dataset: KisanVaani agriculture-qa-english-only on Hugging Face.</p></div><div><h3>References</h3><ul><li><a href="#">Project reference 01</a></li><li><a href="#">Project reference 02</a></li></ul></div></div></footer>
 
   <button id="chat-launcher" class="chat-launcher" aria-label="Open quick advisory chat"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 5.5A3.5 3.5 0 0 1 7.5 2h9A3.5 3.5 0 0 1 20 5.5v6a3.5 3.5 0 0 1-3.5 3.5H11l-4.6 4v-4.1A3.5 3.5 0 0 1 4 11.5v-6Z"/></svg></button>
-  <section id="floating-chat" class="floating-chat" hidden aria-label="Quick advisory chat"><div class="mini-chat-head"><strong>Field advisor</strong><button id="chat-close" aria-label="Close chat">Ã—</button></div><div id="mini-messages" class="mini-messages" role="log" aria-live="polite"><div class="mini-message assistant">Ask a quick sugarcane irrigation question.</div></div><form id="mini-form" class="mini-composer"><input id="mini-input" maxlength="500" aria-label="Chat message" placeholder="Ask a question..."><button type="submit" aria-label="Send message">â†’</button></form></section>
+  <section id="floating-chat" class="floating-chat" hidden aria-label="Quick advisory chat"><div class="mini-chat-head"><strong>Field advisor</strong><button id="chat-close" aria-label="Close chat">×</button></div><div id="mini-messages" class="mini-messages" role="log" aria-live="polite"><div class="mini-message assistant">Ask a quick sugarcane irrigation question.</div></div><form id="mini-form" class="mini-composer"><input id="mini-input" maxlength="500" aria-label="Chat message" placeholder="Ask a question..."><button type="submit" aria-label="Send message">→</button></form></section>
   <script src="/static/app.js"></script>
 </body>
 </html>

@@ -9,6 +9,7 @@ Exports to data/annotations/prelabeled.jsonl and provides seed annotated.jsonl.
 
 import json
 import re
+from pathlib import Path
 
 
 # Multilingual dictionaries for slot pre-labeling
@@ -31,6 +32,9 @@ GAZETTEER_KEYWORDS = {
         "waterlogging", "salinity", "alkalinity", "drought", "moisture stress",
         "dry soil", "yellowing", "soil crusting", "clay soil", "sandy soil",
         "जलभराव", "लवणता", "खारापन", "सूखा", "नमी की कमी", "पीलापन", "दीमक"
+    ],
+    "WEATHER": [
+        "rain", "rainfall", "weather", "बारिश", "वर्षा", "मौसम"
     ]
 }
 

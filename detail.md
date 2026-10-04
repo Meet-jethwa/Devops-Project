@@ -130,6 +130,10 @@ crop_stage: tillering
 The gazetteer also provides a rule-based fallback when the saved slot model is
 not available.
 
+The microservice NLP image copies this same gazetteer and loads the saved CRF
+slot model. This keeps slot extraction consistent with the monolith and
+three-tier logic service instead of using a separate simplified word list.
+
 ### Recommendation
 
 The recommendation logic selects an action such as:
@@ -142,6 +146,9 @@ The recommendation logic selects an action such as:
 
 The recommendation includes a reason and context. Any sensor or weather
 context used by the demonstration is explicitly labelled as simulated.
+Rain or weather slots cause the service to check moisture first. Fertilizer
+intent produces fertilizer guidance without irrigation hours. Other questions
+use the simulated soil-moisture rule.
 
 ### Advisory templates
 
@@ -151,6 +158,9 @@ rain expectation, and fertigation to readable text.
 
 The local templates are important because they provide a dependable fallback
 when an external AI service is not configured or cannot be reached.
+The microservice advisory image copies and calls the same `render_advisory`
+function, so English, Hindi, Marathi, Gujarati, Punjabi, and Kannada use the
+same six-language template source.
 
 Every chat response includes `advisory_source`. It is `gemini` only when a
 successful Gemini response was received; otherwise it is `template`. The smoke
@@ -354,12 +364,21 @@ and starts the service again. Stop the stack with `docker compose down`.
 ### Test and compare
 
 ```powershell
-python -m pytest 1-monolith\tests 3-microservices\tests
+python -m pytest 1-monolith\tests 2-three-tier\tests 3-microservices\tests
 .\scripts\smoke_test.ps1
 ```
 
 The smoke script sends the same question to all three deployments and prints
 the advisory, its source, and the microservice degraded status.
+It currently sends:
+
+```text
+How much urea for tillering stage?
+```
+
+The expected comparison is a non-`General Query` intent, a non-empty
+`STAGE=tillering` slot, and fertilizer guidance without irrigation hours in
+all three responses. The script also prints intent and slots.
 
 ### Common problems
 
@@ -406,11 +425,16 @@ the advisory, its source, and the microservice degraded status.
 16. **Does the frontend change between versions?** No. Relative `/api/` URLs
     let the deployment decide how requests are routed.
 
+17. **How are timeouts configured?** Microservice Gemini requests use a
+    six-second timeout, gateway downstream calls use eight seconds, and Nginx
+    waits up to twelve seconds for the gateway.
+
 ## 9. Testing and CI
 
-The project includes API contract tests, service health tests, happy-path
-tests, a smoke script, and a GitHub Actions workflow that runs tests and builds
-the Docker images.
+The project includes API contract tests, service health tests, regression tests
+for fertilizer slots and Marathi output, a smoke script, and a GitHub Actions
+workflow that runs tests, checks JavaScript syntax with `node --check`, and
+builds the Docker images.
 
 ## 10. Cleanup decisions
 

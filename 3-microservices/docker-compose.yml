@@ -30,6 +30,7 @@ services:
     environment:
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
       GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
+      GEMINI_TIMEOUT_SECONDS: 6
     networks: [private]
 
   feedback-service:
@@ -48,6 +49,7 @@ services:
       RECOMMENDATION_URL: http://recommendation-service:8000
       ADVISORY_URL: http://advisory-service:8000
       FEEDBACK_URL: http://feedback-service:8000
+      DOWNSTREAM_TIMEOUT_SECONDS: 8
     depends_on:
       - nlp-service
       - recommendation-service

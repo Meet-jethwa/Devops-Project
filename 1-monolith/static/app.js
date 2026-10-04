@@ -1,4 +1,4 @@
-﻿/* Phase 1 copied frontend asset; behavior intentionally unchanged. */`r`nconst demoBanner = document.getElementById('demo-banner');
+const demoBanner = document.getElementById('demo-banner');
 const video = document.querySelector('.video-wrap video');
 const videoPlaceholder = document.querySelector('.video-placeholder');
 const launcher = document.getElementById('chat-launcher');
@@ -54,7 +54,7 @@ miniForm?.addEventListener('submit', async (event) => {
   if (!message) return;
   miniInput.value = '';
   addMiniMessage(message, 'user');
-  addMiniMessage('Thinking about that field questionâ€¦', 'assistant');
+  addMiniMessage('Thinking about that field question…', 'assistant');
   const pending = miniMessages.lastElementChild;
   try {
     const response = await fetch('/api/chat', {

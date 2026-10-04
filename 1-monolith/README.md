@@ -6,7 +6,9 @@ unchanged. `api.py` preserves the existing `/`, `/chat`, `/api/health`,
 `/api/chat`, and `/api/feedback` routes and response shapes. `pipeline.py`
 loads only the saved MaxEnt and CRF joblib artifacts in `models/`; it has no
 `torch` import and does not train models. `templates.py` and `gazetteer.py` are the serving copies of the existing
-generation dependencies. `gemini.py` optionally calls Gemini for localized
+generation dependencies. The gazetteer identifies crop, stage, weather, and
+other agriculture slots, while the CRF artifact can refine those labels.
+`gemini.py` optionally calls Gemini for localized
 advisory wording and reports whether the answer came from `gemini` or the local
 `template` fallback.
 

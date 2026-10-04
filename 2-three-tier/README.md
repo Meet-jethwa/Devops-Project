@@ -20,6 +20,10 @@ PostgreSQL at `data:5432` on the private Compose network.
 PostgreSQL data is retained in the named `three-tier-postgres-data` volume.
 Remove that volume explicitly when a clean database is required.
 
+The logic image copies the saved models into `/workspace/src/models`, beside
+the copied `src.pipeline` module. It uses the requirements file in
+`2-three-tier/logic/requirements.txt`.
+
 The logic container receives `GEMINI_API_KEY` and `GEMINI_MODEL` from
 `2-three-tier\.env`. Gemini is optional. A successful response contains
 `advisory_source: "gemini"`; otherwise the local advisory has

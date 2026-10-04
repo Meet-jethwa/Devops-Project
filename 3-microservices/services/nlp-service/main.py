@@ -3,6 +3,7 @@
 
 import os
 import re
+import importlib.util
 from pathlib import Path
 from typing import Any
 
@@ -12,11 +13,24 @@ from pydantic import BaseModel, Field
 
 ROOT = Path(os.getenv("PROJECT_ROOT", "/project"))
 MODEL_PATH = Path(os.getenv("MODEL_PATH", ROOT / "results" / "baseline_maxent_model.joblib"))
+CRF_MODEL_PATH = Path(os.getenv("CRF_MODEL_PATH", ROOT / "results" / "crf_slot_tagger.joblib"))
 app = FastAPI(title="NLP service", version="3.0.0")
 try:
     MODEL = joblib.load(MODEL_PATH)
 except Exception:
     MODEL = None
+try:
+    CRF_MODEL = joblib.load(CRF_MODEL_PATH)
+except Exception:
+    CRF_MODEL = None
+
+gazetteer_path = Path(__file__).with_name("gazetteer.py")
+if not gazetteer_path.exists():
+    gazetteer_path = Path(__file__).resolve().parents[3] / "1-monolith" / "gazetteer.py"
+gazetteer_spec = importlib.util.spec_from_file_location("serving_gazetteer", gazetteer_path)
+gazetteer_module = importlib.util.module_from_spec(gazetteer_spec)
+assert gazetteer_spec.loader is not None
+gazetteer_spec.loader.exec_module(gazetteer_module)
 
 
 @app.middleware("http")
@@ -48,17 +62,33 @@ class Query(BaseModel):
 
 
 def slots(text: str) -> dict[str, str]:
+    tokens, gazetteer_tags = gazetteer_module.pre_label_query(text)
+    tags = gazetteer_tags
+    if CRF_MODEL is not None and tokens:
+        try:
+            features = [gazetteer_module.word2features(tokens, i) for i in range(len(tokens))]
+            crf_tags = CRF_MODEL.predict([features])[0]
+            if any(tag != "O" for tag in crf_tags):
+                tags = crf_tags
+        except Exception:
+            pass
     found: dict[str, str] = {}
-    for label, words in GAZETTEER.items():
-        for word in words:
-            match = re.search(re.escape(word), text, re.IGNORECASE)
-            if match:
-                found[label] = match.group(0)
-                break
-    for label, pattern in PATTERNS.items():
-        match = re.search(pattern, text, re.IGNORECASE)
-        if match:
-            found[label] = match.group(0)
+    current_label = None
+    current_tokens: list[str] = []
+    for token, tag in zip(tokens, tags):
+        if tag.startswith("B-"):
+            if current_label:
+                found[current_label] = " ".join(current_tokens)
+            current_label = tag[2:]
+            current_tokens = [token]
+        elif tag.startswith("I-") and current_label == tag[2:]:
+            current_tokens.append(token)
+        elif current_label:
+            found[current_label] = " ".join(current_tokens)
+            current_label = None
+            current_tokens = []
+    if current_label:
+        found[current_label] = " ".join(current_tokens)
     return found
 
 

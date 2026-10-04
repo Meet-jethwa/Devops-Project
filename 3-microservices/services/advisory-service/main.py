@@ -4,22 +4,24 @@
 from typing import Any
 import json
 import os
+from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.request import Request as UrlRequest, urlopen
 from fastapi import FastAPI, Request
 from pydantic import BaseModel
+try:
+    from templates import render_advisory
+except ImportError:
+    import importlib.util
+
+    templates_path = Path(__file__).resolve().parents[3] / "1-monolith" / "templates.py"
+    templates_spec = importlib.util.spec_from_file_location("serving_templates", templates_path)
+    templates_module = importlib.util.module_from_spec(templates_spec)
+    assert templates_spec.loader is not None
+    templates_spec.loader.exec_module(templates_module)
+    render_advisory = templates_module.render_advisory
 
 app = FastAPI(title="Advisory service", version="3.0.0")
-TEMPLATES = {
-    "en": {"irrigate": "Irrigate the sugarcane field for {hours} hours in the {when}.",
-           "skip_irrigation": "Skip irrigation for now and check soil moisture again.",
-           "monitor": "Monitor field moisture and consult a local agronomist."},
-    "hi": {"irrigate": "{when} गन्ने के खेत में {hours} घंटे सिंचाई करें।",
-           "skip_irrigation": "अभी सिंचाई रोकें और मिट्टी की नमी जाँचें।",
-           "monitor": "खेत की नमी देखें और स्थानीय कृषि विशेषज्ञ से सलाह लें।"},
-}
-
-
 class AdviceRequest(BaseModel):
     message: str = ""
     recommendation: dict[str, Any] = {}
@@ -79,7 +81,7 @@ def health() -> dict[str, str]:
 
 @app.post("/generate")
 def advise(request: AdviceRequest, http_request: Request) -> dict[str, Any]:
-    lang = request.lang if request.lang in TEMPLATES else "en"
+    lang = request.lang if request.lang in {"en", "hi", "mr", "gu", "pa", "kn"} else "en"
     message = request.message.lower()
     if any(term in message for term in ["what is sugarcane", "what's sugarcane", "sugarcane meaning"]):
         local_text = {
@@ -98,9 +100,7 @@ def advise(request: AdviceRequest, http_request: Request) -> dict[str, Any]:
             "suggestions_label": "You can ask next" if lang == "en" else "आप आगे यह पूछ सकते हैं",
         }
     action = request.recommendation.get("action", "monitor")
-    template = TEMPLATES[lang].get(action, TEMPLATES[lang]["monitor"])
-    text = template.format(hours=request.recommendation.get("duration_hours", 0),
-                           when=request.recommendation.get("when", "today"))
+    text = render_advisory(request.recommendation, lang=lang)
     advisory, source = generate_gemini_advisory(request.recommendation, lang, text)
     print(
         f"request_id={http_request.headers.get('X-Request-ID', '-')} "

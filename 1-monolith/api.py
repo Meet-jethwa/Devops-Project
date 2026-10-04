@@ -29,6 +29,7 @@ except ImportError:
     from pipeline import AdvisoryPipeline
     from gemini import generate_advisory
 
+try:
     PIPELINE = AdvisoryPipeline()
     MODEL_LOADED = PIPELINE.intent_model is not None
 except Exception:

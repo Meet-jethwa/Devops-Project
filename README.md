@@ -20,6 +20,8 @@ or agronomic prescription.
   original no-build HTML/CSS/JavaScript frontend.
 - The saved serving models are copied into
   [`1-monolith/models/`](./1-monolith/models/) and reused by the NLP services.
+  The microservice NLP image loads both the saved MaxEnt intent model and the
+  saved CRF slot model, with the serving gazetteer as its fallback.
 - Training datasets, evaluation reports, plots, notebooks, PyTorch
   checkpoints, and SentencePiece artifacts were removed because they are not
   needed to run the deployment demo.
@@ -184,7 +186,7 @@ python -m pip install pytest httpx fastapi
 Run:
 
 ```powershell
-python -m pytest 1-monolith\tests 3-microservices\tests
+python -m pytest 1-monolith\tests 2-three-tier\tests 3-microservices\tests
 ```
 
 The comparison script is
@@ -196,7 +198,15 @@ Start the deployments in separate PowerShell windows, then run:
 ```
 
 It sends the same question to the three URLs and prints the advisory and
-degraded status side by side.
+degraded status side by side. The current comparison question is:
+
+```text
+How much urea for tillering stage?
+```
+
+The output should show a non-`General Query` intent and a non-empty
+`STAGE=tillering` slot for all three versions. The advisory should provide
+fertilizer guidance rather than an irrigation duration.
 
 ## Documentation
 
@@ -205,7 +215,9 @@ degraded status side by side.
   structure without private machine paths.
 - [`docs/architecture.md`](./docs/architecture.md)
   contains Mermaid diagrams and a comparison table.
-  runs tests and builds the Docker images in GitHub Actions.
+- [`.github/workflows/ci.yml`](./.github/workflows/ci.yml)
+  runs tests, checks every frontend JavaScript file with `node --check`, and
+  builds the Docker images in GitHub Actions.
 - [`1-monolith/README.md`](./1-monolith/README.md),
   [`2-three-tier/README.md`](./2-three-tier/README.md),
   and [`3-microservices/README.md`](./3-microservices/README.md)

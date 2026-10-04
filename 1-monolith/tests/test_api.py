@@ -41,6 +41,16 @@ def test_chat_contract():
     assert {"request_id", "intent", "confidence", "slots", "advisory", "lang"} <= body.keys()
 
 
+def test_fertilizer_question_has_intent_and_slots():
+    response = client.post(
+        "/api/chat",
+        json={"message": "How much urea for tillering stage?", "lang": "en"},
+    )
+    body = response.json()
+    assert body["intent"] != "General Query"
+    assert body["slots"]
+
+
 def test_feedback_contract():
     response = client.post(
         "/api/feedback",
