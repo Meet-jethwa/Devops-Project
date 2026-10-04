@@ -3,6 +3,7 @@
 
 import importlib.util
 import sys
+import types
 from pathlib import Path
 
 from fastapi.testclient import TestClient
@@ -10,6 +11,9 @@ from fastapi.testclient import TestClient
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+package = types.ModuleType("monolith")
+package.__path__ = [str(ROOT)]
+sys.modules["monolith"] = package
 spec = importlib.util.spec_from_file_location("monolith.api", ROOT / "api.py")
 api = importlib.util.module_from_spec(spec)
 api.__package__ = "monolith"
