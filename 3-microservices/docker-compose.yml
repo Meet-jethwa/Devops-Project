@@ -1,0 +1,74 @@
+# Phase 3 deployment: private services behind nginx.
+# It exists to show service isolation with one public front door.
+# Analogy: nginx is the reception desk and private services are back offices.
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-flora}
+      POSTGRES_USER: ${POSTGRES_USER:-flora}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+    volumes:
+      - phase3_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks: [private]
+
+  nlp-service:
+    build: {context: .., dockerfile: 3-microservices/services/nlp-service/Dockerfile}
+    networks: [private]
+
+  recommendation-service:
+    build: {context: .., dockerfile: 3-microservices/services/recommendation-service/Dockerfile}
+    networks: [private]
+
+  advisory-service:
+    build: {context: .., dockerfile: 3-microservices/services/advisory-service/Dockerfile}
+    environment:
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
+    networks: [private]
+
+  feedback-service:
+    build: {context: .., dockerfile: 3-microservices/services/feedback-service/Dockerfile}
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-flora}:${POSTGRES_PASSWORD:-change-me}@postgres:5432/${POSTGRES_DB:-flora}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [private]
+
+  gateway:
+    build: {context: .., dockerfile: 3-microservices/services/gateway/Dockerfile}
+    environment:
+      NLP_URL: http://nlp-service:8000
+      RECOMMENDATION_URL: http://recommendation-service:8000
+      ADVISORY_URL: http://advisory-service:8000
+      FEEDBACK_URL: http://feedback-service:8000
+    depends_on:
+      - nlp-service
+      - recommendation-service
+      - advisory-service
+      - feedback-service
+    networks: [private]
+
+  nginx:
+    image: nginx:1.27-alpine
+    volumes:
+      - ../app/static:/usr/share/nginx/html:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "3050:80"
+    depends_on:
+      - gateway
+    networks: [private]
+
+volumes:
+  phase3_pgdata:
+
+networks:
+  private:
+    driver: bridge

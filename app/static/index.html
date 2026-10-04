@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Multilingual sugarcane irrigation advisory demo for farmer questions.">
+  <title>FLoraAI | Sugarcane advisory</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Primary navigation">
+      <a class="brand" href="/" aria-label="FLoraAI home">
+        <img class="brand-mark" src="/static/logo.png" alt="">
+        <span>FLoraAI</span>
+      </a>
+      <div class="nav-links"><a href="#how-it-works">How it works</a><a href="#stages">Crop stages</a><a href="#video">Video</a><a href="/chat">Try the advisor</a></div>
+      <a class="nav-cta" href="/chat">Ask the advisor</a>
+    </nav>
+  </header>
+
+  <div id="demo-banner" class="demo-banner" hidden></div>
+  <main>
+    <section class="hero"><div class="container hero-grid">
+      <div>
+        <div class="eyebrow">Multilingual field guidance</div>
+        <h1>Ask in your own words. Get clear irrigation advice.</h1>
+        <p class="hero-copy">FLoraAI turns everyday farmer questions into a focused sugarcane advisory in Your Local Language.</p>
+        <div class="actions"><a class="button button-primary" href="/chat">Ask the advisor <span aria-hidden="true">→</span></a><a class="button button-secondary" href="#how-it-works">See how it works</a></div>
+      </div>
+    </div></section>
+
+    <section id="how-it-works" class="section"><div class="container"><div class="section-heading"><div class="eyebrow">A simple path from question to action</div><h2>Designed for the way farmers ask.</h2><p>The demo makes each step visible, from a natural-language question to a readable advisory.</p></div><div class="steps">
+      <article class="step-card"><span class="step-number">1</span><h3>Farmer query</h3><p>Ask naturally in your preferred language.</p></article>
+      <article class="step-card"><span class="step-number">2</span><h3>Preprocessing</h3><p>Clean text and identify useful terms.</p></article>
+      <article class="step-card"><span class="step-number">3</span><h3>Intent + slots</h3><p>Recognise the topic and field details.</p></article>
+      <article class="step-card"><span class="step-number">4</span><h3>Recommendation</h3><p>Apply the demo decision logic.</p></article>
+      <article class="step-card"><span class="step-number">5</span><h3>Advisory</h3><p>Return a concise, local-language response.</p></article>
+    </div></div></section>
+
+    <section id="stages" class="section section-soft"><div class="container"><div class="section-heading"><div class="eyebrow">Crop stages</div><h2>One crop, changing needs.</h2><p>Use these as orientation points for a conversation, not as fixed field prescriptions.</p></div><div class="stage-grid">
+      <article class="stage-card"><div class="stage-art"><svg viewBox="0 0 120 130" aria-hidden="true"><path stroke="currentColor" stroke-width="7" d="M60 118V82"/><path fill="currentColor" d="M60 90c-25-18-24-38 3-28 13 5 12 20-3 28Z"/></svg></div><h3>Germination</h3><small>Indicative stage window</small><p>Low to moderate water need; protect emerging growth from stress.</p></article>
+      <article class="stage-card"><div class="stage-art"><svg viewBox="0 0 120 130" aria-hidden="true"><path stroke="currentColor" stroke-width="7" d="M60 118V55M60 88 31 67M60 78l29-25"/><path fill="currentColor" d="M31 68C8 47 16 30 46 47c12 8 6 19-15 21ZM88 53C70 26 86 15 105 39c7 10-1 18-17 14Z"/></svg></div><h3>Tillering</h3><small>Indicative stage window</small><p>Moderate water need; steady field moisture supports new shoots.</p></article>
+      <article class="stage-card"><div class="stage-art"><svg viewBox="0 0 120 130" aria-hidden="true"><path stroke="currentColor" stroke-width="7" d="M60 118V28M60 78 22 48M60 62l39-32M60 93l34-15"/><path fill="currentColor" d="M22 49C-3 24 13 10 43 30c12 9 1 20-21 19ZM99 31C80 3 98-6 115 19c6 10 1 17-16 12ZM94 79c-20-22-5-36 18-20 10 8 2 18-18 20Z"/></svg></div><h3>Grand growth</h3><small>Indicative stage window</small><p>Higher water need; monitor moisture consistently across the field.</p></article>
+      <article class="stage-card"><div class="stage-art"><svg viewBox="0 0 120 130" aria-hidden="true"><path stroke="currentColor" stroke-width="7" d="M60 118V20M60 70 19 41M60 54l40-30M60 91l41-22"/><path fill="currentColor" d="M19 42C-4 14 12 3 42 24c12 9 1 19-23 18ZM100 25C81-2 99-12 116 12c6 10 0 17-16 13ZM101 69C80 46 96 34 118 50c9 8 2 18-17 19Z"/></svg></div><h3>Maturity</h3><small>Indicative stage window</small><p>Moderate water need; avoid extremes and observe crop condition.</p></article>
+      <article class="stage-card"><div class="stage-art"><svg viewBox="0 0 120 130" aria-hidden="true"><path stroke="currentColor" stroke-width="7" d="M60 118V43M60 78 28 60M60 65l33-24"/><path fill="currentColor" d="M28 61C7 38 22 25 48 43c10 8 1 17-20 18ZM93 42C77 18 92 8 108 29c6 9 0 15-15 13Z"/><path stroke="currentColor" stroke-width="9" d="M42 118h36"/></svg></div><h3>Ripening</h3><small>Indicative stage window</small><p>Lower water need; use crop and soil observations to guide decisions.</p></article>
+    </div><p class="footnote">Indicative only; not an agronomic recommendation.</p></div></section>
+
+    <section id="video" class="section"><div class="container"><div class="section-heading"><div class="eyebrow">See the flow</div><h2>From question to field note.</h2></div><div class="video-wrap"><video controls poster="/static/assets/Plant.jpg"><source src="/static/assets/demo.mp4" type="video/mp4"></video><div class="video-placeholder" hidden><div><h3>Demo video coming soon</h3><p>The interactive advisor is ready to try below.</p></div></div></div></div></section>
+
+    <section class="section section-soft"><div class="container"><div class="section-heading"><div class="eyebrow">Example output</div><h2>Advice that stays readable.</h2></div><div class="sample-grid"><article class="sample-card"><span class="sample-label">Example output</span><blockquote>“When should I irrigate after rain?”</blockquote><p><b>Intent:</b> Irrigation and water</p><p>Check field moisture before watering again; avoid unnecessary irrigation.</p></article><article class="sample-card"><span class="sample-label">Example output</span><blockquote>“गन्ने में पानी कब देना चाहिए?”</blockquote><p><b>Intent:</b> सिंचाई और पानी</p><p>मिट्टी की नमी देखकर ही अगली सिंचाई का निर्णय लें।</p></article><article class="sample-card"><span class="sample-label">Example output</span><blockquote>“Drip vs flood irrigation?”</blockquote><p><b>Intent:</b> Irrigation method</p><p>Compare the method with field layout, soil condition, and available water.</p></article></div></div></section>
+
+    <section class="cta-band"><div class="container cta-band-inner"><div><h2>Bring your next field question.</h2><p>Ask the advisor in your own words and inspect how it understood you.</p></div><a class="button" href="/chat">Open the live demo →</a></div></section>
+  </main>
+  <footer class="footer"><div class="container footer-grid"><div><h3>FLoraAI</h3><p>Multilingual Farmer Query Understanding and Advisory Generation for a Sugarcane Irrigation Advisory System.</p><p>Demo only. Not a substitute for expert agronomic advice.</p></div><div><h3>Project</h3><p>Meet Jethwa</p><p>Dataset: KisanVaani agriculture-qa-english-only on Hugging Face.</p></div><div><h3>References</h3><ul><li><a href="#">Project reference 01</a></li><li><a href="#">Project reference 02</a></li></ul></div></div></footer>
+
+  <button id="chat-launcher" class="chat-launcher" aria-label="Open quick advisory chat"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 5.5A3.5 3.5 0 0 1 7.5 2h9A3.5 3.5 0 0 1 20 5.5v6a3.5 3.5 0 0 1-3.5 3.5H11l-4.6 4v-4.1A3.5 3.5 0 0 1 4 11.5v-6Z"/></svg></button>
+  <section id="floating-chat" class="floating-chat" hidden aria-label="Quick advisory chat"><div class="mini-chat-head"><strong>Field advisor</strong><button id="chat-close" aria-label="Close chat">×</button></div><div id="mini-messages" class="mini-messages" role="log" aria-live="polite"><div class="mini-message assistant">Ask a quick sugarcane irrigation question.</div></div><form id="mini-form" class="mini-composer"><input id="mini-input" maxlength="500" aria-label="Chat message" placeholder="Ask a question..."><button type="submit" aria-label="Send message">→</button></form></section>
+  <script src="/static/app.js"></script>
+</body>
+</html>

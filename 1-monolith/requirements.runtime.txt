@@ -1,0 +1,10 @@
+# Phase 1 runtime-only dependencies; training frameworks are intentionally excluded.
+# Runtime dependencies for the torch-free monolith.
+fastapi==0.115.6
+uvicorn==0.34.0
+pydantic==2.10.6
+joblib==1.4.2
+numpy==2.2.2
+scikit-learn==1.9.1
+sklearn-crfsuite==0.3.6
+pyyaml==6.0.2

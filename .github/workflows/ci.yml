@@ -1,0 +1,28 @@
+# CI workflow: run Python checks and build the three architecture images.
+# It exists to make the lab reproducible on every push.
+# Analogy: this is an automatic checklist before a project is submitted.
+name: CI
+on: [push, pull_request]
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pytest httpx
+          python -m pip install -r 1-monolith/requirements.runtime.txt
+          python -m pip install -r 2-three-tier/logic/requirements.txt
+          for file in 3-microservices/services/*/requirements.txt; do python -m pip install -r "$file"; done
+      - name: Run tests
+        run: python -m pytest 1-monolith/tests 3-microservices/tests
+      - name: Build monolith
+        run: docker build -f 1-monolith/Dockerfile -t floraai-monolith .
+      - name: Build three-tier logic image
+        run: docker build -f 2-three-tier/logic/Dockerfile -t floraai-three-tier-logic .
+      - name: Build microservice images
+        run: docker compose -f 3-microservices/docker-compose.yml build

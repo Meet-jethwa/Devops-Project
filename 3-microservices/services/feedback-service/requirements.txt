@@ -1,0 +1,5 @@
+# Phase 3 feedback runtime dependencies.
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2.0
+asyncpg>=0.29

@@ -1,0 +1,23 @@
+# Root development and test dependencies for the irrigation advisory lab.
+# It exists so a beginner can prepare one local Python environment.
+# Analogy: this is the shared shopping list for running and checking the lab.
+
+# FastAPI application runtime.
+fastapi==0.115.6
+uvicorn==0.34.0
+pydantic==2.10.6
+
+# Torch-free NLP inference using the saved model artifacts.
+joblib==1.4.2
+numpy==2.2.2
+scikit-learn==1.9.1
+sklearn-crfsuite==0.3.6
+pyyaml==6.0.2
+
+# Database clients used by the three-tier and microservice versions.
+psycopg[binary]==3.2.3
+asyncpg==0.30.0
+
+# HTTP calls and local automated tests.
+httpx==0.28.1
+pytest==8.3.4

@@ -1,0 +1,27 @@
+﻿<!-- Phase 1 copied frontend asset; behavior intentionally unchanged. -->`r`n<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="FLoraAI conversational sugarcane irrigation advisor.">
+  <title>Chat | FLoraAI</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div id="demo-banner" class="demo-banner" hidden></div>
+  <div class="chat-shell">
+    <aside class="sidebar" aria-label="Chat sidebar">
+      <a class="brand" href="/"><img class="brand-mark" src="/static/logo.png" alt=""><span>FLoraAI</span></a>
+      <button id="new-chat" class="button sidebar-button">+ New chat</button>
+      <label class="sidebar-label" for="language">Language</label><select id="language" class="language-select"><option value="en">English</option><option value="hi">Hindi</option><option value="mr">Marathi</option><option value="gu">Gujarati</option><option value="pa">Punjabi</option><option value="kn">Kannada</option></select>
+      <p class="sidebar-label" style="margin-top:28px">This session</p><div id="session-list"></div>
+    </aside>
+    <main class="chat-main">
+      <header class="chat-topbar"><div><strong>Sugarcane field advisor</strong><p>Ask clearly. Review the reasoning. Decide locally.</p></div><a class="button button-secondary" href="/">Home</a></header>
+      <section id="message-log" class="message-log" role="log" aria-live="polite"><div id="empty-state" class="empty-state"><img class="brand-mark" src="/static/logo.png" alt="FLoraAI logo"><h1>How can I help with your sugarcane crop?</h1><div class="suggestions"><button class="suggestion">When should I irrigate after rain?</button><button class="suggestion">How much urea for tillering stage?</button><button class="suggestion">Leaves are turning yellow, why?</button><button class="suggestion">Drip vs flood irrigation?</button></div></div></section>
+      <div id="chat-error" class="error-message" hidden></div>
+      <div class="composer-wrap"><form id="composer" class="composer"><textarea id="message-input" rows="1" maxlength="500" aria-label="Message" placeholder="Ask about irrigation, moisture, or crop stage..."></textarea><button id="stop-button" class="button button-secondary" type="button" hidden>Stop</button><button id="send-button" class="send-button" type="submit" aria-label="Send message" disabled><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m4 4 17 8-17 8 3-8-3-8Zm4.7 7h6.9L8.7 8.4 9.9 11Z"/></svg></button></form></div>
+    </main>
+  </div>
+  <script src="/static/chat.js"></script>
+</body>
+</html>
