@@ -1,4 +1,4 @@
-﻿# FastAPI logic tier: inference and feedback only; frontend files are never served here.
+# FastAPI logic tier: inference and feedback only; frontend files are never served here.
 import os
 
 import psycopg
@@ -227,9 +227,11 @@ def chat(payload: ChatRequest, request: Request) -> dict:
         try:
             processed = PIPELINE.process(message, language=lang)
             advisory, advisory_source = generate_advisory(
+                message,
                 processed.get("structured_record", processed),
                 lang,
                 processed["advisory"],
+                session_id=payload.session_id,
             )
             result = {
                 "intent": processed["intent"],

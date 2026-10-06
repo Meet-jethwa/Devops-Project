@@ -248,6 +248,41 @@ class AdvisoryPipeline:
             }
             return localized.get(lang, localized["en"])
 
+        if any(term in query_lower for term in ["cut", "harvest", "cutting", "maturity", "कटाई", "काटना", "कापणी", "કાપણી"]):
+            localized = {
+                "en": "Sugarcane is typically ready to harvest 10 to 14 months after planting (or 11 to 12 months for ratoon crops). Look for peak maturity signs: lower leaves dry out, stalks become firm and make a metallic sound when tapped, and juice Brix reaches 18–20%. Always cut stalks flush with ground level to capture maximum sugar and ensure healthy ratoon regrowth.",
+                "hi": "गन्ने की कटाई आमतौर पर रोपाई के 10 से 14 महीने बाद (और पेड़ी में 11 से 12 महीने बाद) की जाती है। परिपक्वता के मुख्य संकेत: निचली पत्तियां सूखने लगें, तना सख्त हो जाए और थपथपाने पर धातु जैसी खनक आए, तथा ब्रिक्स (मिठास) 18–20% हो। हमेशा गन्ने को जमीन की सतह से सटाकर काटें ताकि अधिक चीनी मिले और पेड़ी अच्छी फूटे।",
+                "mr": "ऊस तोडणी सामान्यतः लागवडीनंतर 10 ते 14 महिन्यांनी (आणि खोडवा 11 ते 12 महिन्यांनी) केली जाते. पक्वतेची लक्षणे: खालची पाने वाळणे, कांड्या टणक होणे आणि ब्रिक्स (साखरेचे प्रमाण) 18-20% असणे. ऊस नेहमी जमिनीलगत कापावा जेणेकरून जास्तीत जास्त साखर मिळते.",
+                "gu": "શેરડીની કાપણી સામાન્ય રીતે વાવણી પછી 10 થી 14 મહિને (અને પેડી શેરડી 11 થી 12 મહિને) કરવામાં આવે છે. પરિપક્વતાની નિશાનીઓ: નીચેના પાંદડા સૂકવવા લાગે, સાંઠો કઠણ બને અને બ્રિક્સ 18-20% થાય. હંમેશા જમીનને અડીને શેરડી કાપવી.",
+            }
+            return localized.get(lang, localized["en"])
+
+        if ("yellow" in query_lower or "chlorosis" in query_lower or "पीली" in query_lower or "पिवळी" in query_lower or "પીળા" in query_lower) and (
+            "leaf" in query_lower or "leaves" in query_lower or "पत्त" in query_lower or "पान" in query_lower or "પાંદ" in query_lower
+        ):
+            localized = {
+                "en": "Yellow leaves can result from nitrogen or iron deficiency, excess water, poor drainage, pests, or root stress. Check whether the soil is waterlogged, inspect the roots and leaf undersides, and use a soil test before applying fertilizer. If yellowing spreads quickly, consult a local agronomist.",
+                "hi": "पीली पत्तियां नाइट्रोजन या आयरन की कमी, अधिक पानी, खराब जल निकास, कीट या जड़ों पर तनाव के कारण हो सकती हैं। जलभराव की जांच करें, जड़ों और पत्तियों के नीचे देखें और खाद डालने से पहले मिट्टी की जांच कराएं।",
+                "mr": "पाने पिवळी पडणे हे नायट्रोजन किंवा लोहाची कमतरता, जास्त पाणी, पाण्याचा निचरा न होणे किंवा कीड-रोगांमुळे होऊ शकते. जमिनीत पाणी साचले आहे का ते तपासा आणि खत देण्यापूर्वी माती परीक्षण करा.",
+                "gu": "પાંદડા પીળા પડવાનું કારણ નાઇટ્રોજન અથવા લોહતત્વની ઉણપ, વધારે પડતું પાણી, નબળો નિકાલ અથવા જીવાત હોઈ શકે છે. જમીનમાં પાણી ભરાયેલું નથી તે તપાસો.",
+            }
+            return localized.get(lang, localized["en"])
+
+        if any(term in query_lower for term in ["what is the issue", "what's the issue", "what is the problem", "why", "क्या समस्या", "काय समस्या"]):
+            localized = {
+                "en": "Common sugarcane issues stem from nutrient imbalances (nitrogen/iron deficiency), improper irrigation (waterlogging or drought), root stress, or pests like yellow leaf virus and stem borers. Inspect root zone moisture, leaf color patterns, and leaf undersides to identify the cause.",
+                "hi": "गन्ने में आम समस्याएं पोषक तत्वों की कमी (नाइट्रोजन/आयरन), गलत सिंचाई (जलभराव या सूखा), जड़ों पर तनाव, या यलो लीफ वायरस और तना छेदक जैसे कीट हो सकते हैं। समस्या पहचानने के लिए मिट्टी की नमी, पत्तियों का रंग और तने की स्थिति देखें।",
+                "mr": "उसातील समस्या सामान्यतः पोषक द्रव्यांची कमतरता, पाण्याचा ताण (पाणी साचणे किंवा दुष्काळ) किंवा कीड-रोगांमुळे असतात. मूळ भागातील ओलावा आणि पानांचा रंग तपासा.",
+            }
+            return localized.get(lang, localized["en"])
+
+        if ("when" in query_lower or "best time" in query_lower) and ("plant" in query_lower or "sow" in query_lower or "बुवाई" in query_lower or "लागवड" in query_lower):
+            localized = {
+                "en": "Plant sugarcane at the locally recommended planting window, usually at the start of a reliable warm season. Choose healthy disease-free setts, ensure the soil has good moisture and drainage, and confirm the exact month with your local agricultural extension service.",
+                "hi": "गन्ने की रोपाई स्थानीय अनुशंसित समय पर करें, आमतौर पर गर्म मौसम की स्थिर शुरुआत में। स्वस्थ रोगमुक्त सेट चुनें, मिट्टी में पर्याप्त नमी और अच्छा जल निकास रखें, तथा सही महीने की पुष्टि स्थानीय कृषि विभाग से करें।",
+            }
+            return localized.get(lang, localized["en"])
+
         if any(term in query_lower for term in [
             "irrigat", "water", "watering", "सिंचाई", "पानी", "सिंचन", "पाणी",
             "સિંચાઈ", "પાણી", "ਸਿੰਚਾਈ", "ਪਾਣੀ", "ನೀರಾವರಿ", "ನೀರು"

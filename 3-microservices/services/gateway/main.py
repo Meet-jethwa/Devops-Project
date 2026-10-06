@@ -10,7 +10,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
-TIMEOUT = float(os.getenv("DOWNSTREAM_TIMEOUT_SECONDS", "2.5"))
+TIMEOUT = float(os.getenv("DOWNSTREAM_TIMEOUT_SECONDS", "15.0"))
 SERVICES = {
     "nlp": os.getenv("NLP_URL", "http://nlp-service:8000"),
     "recommendation": os.getenv("RECOMMENDATION_URL", "http://recommendation-service:8000"),
@@ -97,7 +97,7 @@ async def chat(payload: ChatRequest, request: Request) -> JSONResponse:
                                         "rain_expected": False, "fertigation": False, "demo_data": True}
     advisory = await call(
         f"{SERVICES['advisory']}/generate",
-        {"message": payload.message, "recommendation": recommendation, "lang": lang},
+        {"message": payload.message, "recommendation": recommendation, "lang": lang, "session_id": payload.session_id},
         request_id,
     )
     degraded = degraded or advisory is None

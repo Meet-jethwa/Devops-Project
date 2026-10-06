@@ -1,4 +1,4 @@
-const state = {messages: [], requestId: null, composing: false, controller: null};
+const state = {messages: [], requestId: null, composing: false, controller: null, sessionId: 'session-' + Date.now()};
 const log = document.getElementById('message-log');
 const emptyState = document.getElementById('empty-state');
 const form = document.getElementById('composer');
@@ -132,9 +132,11 @@ function appendMessage(role, content, data = null) {
   const avatar = role === 'assistant' ? '<div class="avatar"><img src="/static/logo.png" alt="FLoraAI"></div>' : '';
   let details = '';
   if (role === 'assistant' && data) {
-    const suggestions = (data.suggestions || []).map((suggestion) => `<button class="next-suggestion" data-next-question="${escapeHtml(suggestion)}">${escapeHtml(suggestion)}</button>`).join('');
-    const sugLabel = data.suggestions_label ? `<p class="suggestions-label">${escapeHtml(data.suggestions_label)}</p>` : '';
-    details = `<div class="action-row"><button data-action="copy" aria-label="${copy.copy}" title="${copy.copy}">⧉</button><button data-action="accept" aria-label="${copy.helpful}" title="${copy.helpful}">✓</button><button data-action="override" aria-label="${copy.notHelpful}" title="${copy.notHelpful}">✎</button><button data-action="regenerate" aria-label="${copy.regenerate}" title="${copy.regenerate}">↻</button></div><div class="next-questions">${sugLabel}<div>${suggestions}</div></div>`;
+    const hasSuggestions = Array.isArray(data.suggestions) && data.suggestions.length > 0;
+    const suggestions = hasSuggestions ? data.suggestions.map((suggestion) => `<button class="next-suggestion" data-next-question="${escapeHtml(suggestion)}">${escapeHtml(suggestion)}</button>`).join('') : '';
+    const sugLabel = (hasSuggestions && data.suggestions_label) ? `<p class="suggestions-label">${escapeHtml(data.suggestions_label)}</p>` : '';
+    const nextQuestionsBlock = hasSuggestions ? `<div class="next-questions">${sugLabel}<div>${suggestions}</div></div>` : '';
+    details = `<div class="action-row"><button data-action="copy" aria-label="${copy.copy}" title="${copy.copy}">⧉</button><button data-action="accept" aria-label="${copy.helpful}" title="${copy.helpful}">✓</button><button data-action="override" aria-label="${copy.notHelpful}" title="${copy.notHelpful}">✎</button><button data-action="regenerate" aria-label="${copy.regenerate}" title="${copy.regenerate}">↻</button></div>${nextQuestionsBlock}`;
   }
   wrapper.innerHTML = `${avatar}<div class="message-body"><div class="message-content">${markdownLite(content)}</div>${details}</div>`;
   if (role === 'assistant' && data) bindActions(wrapper, data, content);
@@ -190,7 +192,7 @@ async function requestAdvice(message) {
   renderConversation();
   const thinking = appendMessage('assistant', copy.thinking);
   try {
-    const response = await fetch('/api/chat', {method: 'POST', headers: {'Content-Type': 'application/json'}, signal: state.controller.signal, body: JSON.stringify({message, lang: language.value, session_id: 'browser-session'})});
+    const response = await fetch('/api/chat', {method: 'POST', headers: {'Content-Type': 'application/json'}, signal: state.controller.signal, body: JSON.stringify({message, lang: language.value, session_id: state.sessionId})});
     if (!response.ok) throw new Error(copy.unavailable);
     const data = await response.json();
     if (!data.advisory) throw new Error(copy.emptyResponse);
@@ -227,12 +229,13 @@ input.addEventListener('keydown', (event) => {
 });
 
 document.querySelectorAll('.suggestion').forEach((button) => button.addEventListener('click', () => requestAdvice(button.textContent)));
-newChat.addEventListener('click', () => { state.messages = []; state.requestId = null; setError(''); renderConversation(); input.focus(); });
+newChat.addEventListener('click', () => { state.messages = []; state.requestId = null; state.sessionId = 'session-' + Date.now(); setError(''); renderConversation(); input.focus(); });
 language.addEventListener('change', () => {
   state.controller?.abort();
   state.controller = null;
   state.messages = [];
   state.requestId = null;
+  state.sessionId = 'session-' + Date.now();
   sessionList.innerHTML = '';
   input.value = '';
   applyLanguage();

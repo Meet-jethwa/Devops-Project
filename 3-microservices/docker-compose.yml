@@ -29,8 +29,9 @@ services:
     build: {context: .., dockerfile: 3-microservices/services/advisory-service/Dockerfile}
     environment:
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
-      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
-      GEMINI_TIMEOUT_SECONDS: 6
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-3.5-flash}
+      GEMINI_FALLBACK_MODEL: ${GEMINI_FALLBACK_MODEL:-gemini-3.1-flash-lite}
+      GEMINI_TIMEOUT_SECONDS: 10
     networks: [private]
 
   feedback-service:
@@ -49,7 +50,7 @@ services:
       RECOMMENDATION_URL: http://recommendation-service:8000
       ADVISORY_URL: http://advisory-service:8000
       FEEDBACK_URL: http://feedback-service:8000
-      DOWNSTREAM_TIMEOUT_SECONDS: 8
+      DOWNSTREAM_TIMEOUT_SECONDS: 15
     depends_on:
       - nlp-service
       - recommendation-service
